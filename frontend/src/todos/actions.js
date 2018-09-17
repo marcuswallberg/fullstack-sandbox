@@ -29,7 +29,7 @@ export const setActiveList = listId => {
 
 export const SAVE_TODO_LIST = "SAVE_TODO_LIST";
 
-export const saveToDoList = ({ listId, todos }) => {
+export const saveToDoList = ({ listId, todos, completed }) => {
   return async dispatch => {
     // await sleep(1000);
 
@@ -40,5 +40,25 @@ export const saveToDoList = ({ listId, todos }) => {
     xmlhttp.send(JSON.stringify({ listId, todos }));
 
     dispatch({ type: SAVE_TODO_LIST, listId, todos: fromJS(todos) });
+  };
+};
+
+export const UPDATE_COMPLETED_TASK = "UPDATE_COMPLETED_TASK";
+
+export const updateCompleted = ({ listId, completed }) => {
+  return async dispatch => {
+    // await sleep(1000);
+
+    // Send the update to Node
+    var xmlhttp = new XMLHttpRequest(); // new HttpRequest instance
+    xmlhttp.open("POST", "/api/updateCompleted");
+    xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xmlhttp.send(JSON.stringify({ listId, completed }));
+
+    dispatch({
+      type: UPDATE_COMPLETED_TASK,
+      listId,
+      completed: fromJS(completed)
+    });
   };
 };

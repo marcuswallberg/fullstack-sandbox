@@ -17,7 +17,7 @@ import arrayMutators from "final-form-arrays";
 import { FieldArray } from "react-final-form-arrays";
 import { RegularTextField } from "../../shared/FormFields";
 import { required } from "../../shared/FormValidators";
-import { saveToDoList } from "../actions";
+import { saveToDoList, updateCompleted } from "../actions";
 // import TextField from "@material-ui/core/TextField";
 // import DatePicker from "./DatePicker";
 
@@ -39,7 +39,15 @@ const styles = theme => ({
   },
   completeColor: {
     color: green[500],
-    backgroundColor: "white",
+    backgroundColor: "",
+    "&:hover": {
+      backgroundColor: green[50]
+    }
+  },
+  completeColorRow: {
+    main: green[100],
+    color: green[50],
+    backgroundColor: green[50],
     "&:hover": {
       backgroundColor: green[50]
     }
@@ -58,8 +66,9 @@ export const ToDoListForm = compose(
       };
     },
     dispatch => ({
-      onSubmit: async ({ id, todos }) => {
+      onSubmit: async ({ id, todos, completed }) => {
         await dispatch(saveToDoList({ listId: id, todos }));
+        // await dispatch(updateCompleted({ listId: id, todos }));
       }
     })
   ),
@@ -92,7 +101,10 @@ export const ToDoListForm = compose(
                     fields.map((name, index) => (
                       <div
                         key={name}
-                        className={classes.todoLine}
+                        className={classNames(
+                          classes.todoLine
+                          // toDoList.completed[index] && classes.completeColorRow
+                        )}
                         onBlur={handleSubmit}
                       >
                         <Typography
@@ -104,7 +116,11 @@ export const ToDoListForm = compose(
                         <Field
                           name={`${name}`}
                           component={RegularTextField}
-                          label={index === 1 ? "long" : "What to do?"}
+                          label={
+                            toDoList.completed[index] === 1
+                              ? "Completed"
+                              : "What to do?"
+                          }
                           className={classes.textField}
                           validate={required}
                         />

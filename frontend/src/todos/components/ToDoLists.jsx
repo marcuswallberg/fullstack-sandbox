@@ -31,6 +31,9 @@ export const ToDoLists = compose(
   lifecycle({
     componentDidMount() {
       this.props.dispatch(getPersonalTodos());
+    },
+    componentWillUnmount() {
+      alert("Unmounted");
     }
   })
 )(({ dispatch, toDoLists, style }) => {

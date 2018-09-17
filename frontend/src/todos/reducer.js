@@ -3,7 +3,8 @@ import { Map } from "immutable";
 import {
   GET_PERSONAL_TODOS_SUCCESS,
   SET_ACTIVE_LIST,
-  SAVE_TODO_LIST
+  SAVE_TODO_LIST,
+  UPDATE_COMPLETED_TASK
 } from "./actions";
 
 const toDoLists = (state = Map(), action) => {
@@ -13,6 +14,8 @@ const toDoLists = (state = Map(), action) => {
     case SAVE_TODO_LIST: {
       return state.setIn([action.listId, "todos"], action.todos);
     }
+    case UPDATE_COMPLETED_TASK:
+      return state.setIn([action.listId, "completed"], action.completed);
     default:
       return state;
   }
